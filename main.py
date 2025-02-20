@@ -3780,7 +3780,8 @@ async def tictactoe(message: discord.Interaction, person: discord.Member):
                         best_move = spot
             return best_move
     
-    def async update_board(turn_spot):
+    def async update_board(turn_spot, interaction):
+        nonlocal current_turn
         board_state[turn_spot] = "X" if current_turn == message.user else "O"
         winner = check_winner()[1]
         if winner:
@@ -3831,10 +3832,10 @@ async def tictactoe(message: discord.Interaction, person: discord.Member):
                 await interaction.followup.send("this cell is occupied", ephemeral=True)
                 return
 
-            if update_board(turn_spot):
+            if update_board(turn_spot, interaction):
                 return
             if playing_bot:
-                update_board(bot_move())
+                update_board(bot_move(), interaction)
         else:
             await do_funny(interaction)
 
